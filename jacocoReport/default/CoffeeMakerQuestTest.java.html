@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeeMakerQuestTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">CoffeeMakerQuestTest.java</span></div><h1>CoffeeMakerQuestTest.java</h1><pre class="source lang-java linenums">import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.junit.*;
+import org.mockito.*;
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L8">public class CoffeeMakerQuestTest {</span>
+
+	CoffeeMakerQuest cmq;
+	Player player;
+	Room room1;	// Small room
+	Room room2;	// Funny room
+	Room room3;	// Refinanced room
+	Room room4;	// Dumb room
+	Room room5;	// Bloodthirsty room
+	Room room6;	// Rough room
+
+	@Before
+	public void setup() {
+		// 0. Turn on bug injection for Player and Room.
+<span class="fc" id="L22">		Config.setBuggyPlayer(true);</span>
+<span class="fc" id="L23">		Config.setBuggyRoom(true);</span>
+		
+		//1. Create the Coffee Maker Quest object and assign to cmq.
+<span class="fc" id="L26">		cmq = CoffeeMakerQuest.createInstance();</span>
+
+		//2. Create a mock Player and assign to player and call cmq.setPlayer(player). 
+<span class="fc" id="L29">		player = Mockito.mock(Player.class);</span>
+<span class="fc" id="L30">		cmq.setPlayer(player);</span>
+		// Player should not have any items (no coffee, no cream, no sugar)
+<span class="fc" id="L32">		when(player.getInventoryString()).thenReturn(&quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n&quot;);</span>
+
+
+
+		//3. Create mock Rooms and assign to room1, room2, ..., room6.
+		// Mimic the furnishings / adjectives / items of the rooms in the original Coffee Maker Quest.
+<span class="fc" id="L38">		room1 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L39">			when(room1.getFurnishing()).thenReturn(&quot;Quaint sofa&quot;);</span>
+<span class="fc" id="L40">			when(room1.getAdjective()).thenReturn(&quot;Small&quot;);</span>
+<span class="fc" id="L41">			when(room1.getItem()).thenReturn(Item.CREAM);</span>
+<span class="fc" id="L42">		room2 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L43">			when(room2.getFurnishing()).thenReturn(&quot;Sad record player&quot;);</span>
+<span class="fc" id="L44">			when(room2.getAdjective()).thenReturn(&quot;Funny&quot;);</span>
+<span class="fc" id="L45">			when(room2.getItem()).thenReturn(Item.NONE);</span>
+<span class="fc" id="L46">		room3 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L47">			when(room3.getFurnishing()).thenReturn(&quot;Tight pizza&quot;);</span>
+<span class="fc" id="L48">			when(room3.getAdjective()).thenReturn(&quot;Refinanced&quot;);</span>
+<span class="fc" id="L49">			when(room3.getItem()).thenReturn(Item.COFFEE);</span>
+<span class="fc" id="L50">		room4 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L51">			when(room4.getFurnishing()).thenReturn(&quot;Flat energy drink&quot;);</span>
+<span class="fc" id="L52">			when(room4.getAdjective()).thenReturn(&quot;Dumb&quot;);</span>
+<span class="fc" id="L53">			when(room4.getItem()).thenReturn(Item.NONE);</span>
+<span class="fc" id="L54">		room5 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L55">			when(room5.getFurnishing()).thenReturn(&quot;Beautiful bag of money&quot;);</span>
+<span class="fc" id="L56">			when(room5.getAdjective()).thenReturn(&quot;Bloodthirsty&quot;);</span>
+<span class="fc" id="L57">			when(room5.getItem()).thenReturn(Item.NONE);</span>
+<span class="fc" id="L58">		room6 = Mockito.mock(Room.class);</span>
+<span class="fc" id="L59">			when(room6.getFurnishing()).thenReturn(&quot;Perfect air hockey table&quot;);</span>
+<span class="fc" id="L60">			when(room6.getAdjective()).thenReturn(&quot;Rough&quot;);</span>
+<span class="fc" id="L61">			when(room6.getItem()).thenReturn(Item.SUGAR);</span>
+		
+	// TODO: 4. Add the rooms created above to mimic the layout of the original Coffee Maker Quest.
+<span class="fc" id="L64">		cmq.addFirstRoom(room1);</span>
+<span class="fc" id="L65">		cmq.addRoomAtNorth(room2, &quot;Magenta&quot;, &quot;Massive&quot;);</span>
+<span class="fc" id="L66">		cmq.addRoomAtNorth(room3, &quot;Beige&quot;, &quot;Smart&quot;);</span>
+<span class="fc" id="L67">		cmq.addRoomAtNorth(room4, &quot;Dead&quot;, &quot;Slim&quot;);</span>
+<span class="fc" id="L68">		cmq.addRoomAtNorth(room5, &quot;Vivacious&quot;, &quot;Sandy&quot;);</span>
+<span class="fc" id="L69">		cmq.addRoomAtNorth(room6, &quot;Purple&quot;, &quot;Minimalist&quot;);</span>
+	
+		
+<span class="fc" id="L72">	}</span>
+
+	@After
+	public void tearDown() 
+	{
+	
+<span class="fc" id="L78">	}</span>
+	
+	/**
+	 * Test case for String getInstructionsString().
+	 * Preconditions: None.
+	 * Execution steps: Call cmq.getInstructionsString().
+	 * Postconditions: Return value is &quot; INSTRUCTIONS (N,S,L,I,D,H) &gt; &quot;.
+	 */
+	@Test
+	public void testGetInstructionsString() 
+	{
+<span class="fc" id="L89">		assertEquals(cmq.getInstructionsString(), &quot; INSTRUCTIONS (N,S,L,I,D,H) &gt; &quot;);</span>
+<span class="fc" id="L90">	}</span>
+	
+	/**
+	 * Test case for boolean addFirstRoom(Room room).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                Create a mock room and assign to myRoom.
+	 * Execution steps: Call cmq.addFirstRoom(myRoom).
+	 * Postconditions: Return value is false.
+	 */
+	@Test
+	public void testAddFirstRoom() 
+	{
+		//mock room myRoom 
+<span class="fc" id="L103">		Room myRoom = Mockito.mock(Room.class);</span>
+<span class="fc" id="L104">		assertEquals(cmq.addFirstRoom(myRoom),false);</span>
+<span class="fc" id="L105">	}</span>
+
+	
+	/**
+	 * Test case for boolean addRoomAtNorth(Room room, String northDoor, String southDoor).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                Create a mock &quot;Fake&quot; room with &quot;Fake bed&quot; furnishing with no item, and assign to myRoom.
+	 * Execution steps: Call cmq.addRoomAtNorth(myRoom, &quot;North&quot;, &quot;South&quot;).
+	 * Postconditions: Return value is true.
+	 *                 room6.setNorthDoor(&quot;North&quot;) is called.
+	 *                 myRoom.setSouthDoor(&quot;South&quot;) is called.
+	 */
+	@Test
+	public void testAddRoomAtNorthUnique() 
+	{
+		/*PRECOND*/
+		//create fake room 
+<span class="fc" id="L122">		Room myRoom = Mockito.mock(Room.class);</span>
+		//fake bed furnishing 
+<span class="fc" id="L124">		when(myRoom.getFurnishing()).thenReturn(&quot;Fake bed&quot;);</span>
+		//with no item 
+<span class="fc" id="L126">		when(myRoom.getItem()).thenReturn(Item.NONE);</span>
+		/*EXE*/
+<span class="fc" id="L128">		assertEquals(cmq.addRoomAtNorth(myRoom, &quot;North&quot;, &quot;South&quot;),true);</span>
+		/*POST*/
+<span class="fc" id="L130">		Mockito.verify(room6, times(1)).setNorthDoor(&quot;North&quot;);</span>
+<span class="fc" id="L131">		Mockito.verify(myRoom, times(1)).setSouthDoor(&quot;South&quot;);</span>
+
+
+<span class="fc" id="L134">	}</span>
+	
+	/**
+	 * Test case for boolean addRoomAtNorth(Room room, String northDoor, String southDoor).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                Create a mock &quot;Fake&quot; room with &quot;Flat energy drink&quot; furnishing with no item, and assign to myRoom.
+	 * Execution steps: Call cmq.addRoomAtNorth(myRoom, &quot;North&quot;, &quot;South&quot;).
+	 * Postconditions: Return value is false.
+	 *                 room6.setNorthDoor(&quot;North&quot;) is not called.
+	 *                 myRoom.setSouthDoor(&quot;South&quot;) is not called.
+	 */
+	@Test
+	public void testAddRoomAtNorthDuplicate() 
+	{
+		/*PRECOND*/
+		//create fake room 
+<span class="fc" id="L150">		Room myRoom = Mockito.mock(Room.class);</span>
+		//fake bed furnishing 
+<span class="fc" id="L152">		when(myRoom.getFurnishing()).thenReturn(&quot;Flat energy drink&quot;);</span>
+		//with no item 
+<span class="fc" id="L154">		when(myRoom.getItem()).thenReturn(Item.NONE);</span>
+		/*EXE*/
+<span class="fc" id="L156">		assertFalse(cmq.addRoomAtNorth(myRoom, &quot;North&quot;, &quot;South&quot;));</span>
+		/*POST*/
+<span class="fc" id="L158">		Mockito.verify(room6, times(0)).setNorthDoor(&quot;North&quot;);</span>
+<span class="fc" id="L159">		Mockito.verify(myRoom, times(0)).setSouthDoor(&quot;South&quot;);</span>
+<span class="fc" id="L160">	}</span>
+	
+	/**
+	 * Test case for Room getCurrentRoom().
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(Room) has not yet been called.
+	 * Execution steps: Call cmq.getCurrentRoom().
+	 * Postconditions: Return value is null.
+	 */
+	@Test
+	public void testGetCurrentRoom() 
+	{
+<span class="fc" id="L172">		assertNull(cmq.getCurrentRoom());</span>
+<span class="fc" id="L173">	}</span>
+	
+	/**
+	 * Test case for void setCurrentRoom(Room room) and Room getCurrentRoom().
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(Room room) has not yet been called.
+	 * Execution steps: Call cmq.setCurrentRoom(room3).
+	 *                  Call cmq.getCurrentRoom().
+	 * Postconditions: Return value of cmq.setCurrentRoom(room3) is true. 
+	 *                 Return value of cmq.getCurrentRoom() is room3.
+	 */
+	@Test
+	public void testSetCurrentRoom() 
+	{
+<span class="fc" id="L187">		assertTrue(cmq.setCurrentRoom(room3));</span>
+<span class="fc" id="L188">		assertEquals(cmq.getCurrentRoom(),room3);</span>
+<span class="fc" id="L189">	}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;I&quot;).
+	 * Preconditions: Player does not have any items.
+	 * Execution steps: Call cmq.processCommand(&quot;I&quot;).
+	 * Postconditions: Return value is &quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n&quot;.
+	 */
+	@Test
+	public void testProcessCommandI() 
+	{
+<span class="fc" id="L200">		assertEquals(cmq.processCommand(&quot;I&quot;),&quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n&quot;);</span>
+<span class="fc" id="L201">	}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;l&quot;).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(room1) has been called.
+	 * Execution steps: Call cmq.processCommand(&quot;l&quot;).
+	 * Postconditions: Return value is &quot;There might be something here...\nYou found some creamy cream!\n&quot;.
+	 *                 player.addItem(Item.CREAM) is called.
+	 */
+	@Test
+	public void testProcessCommandLCream() 
+	{
+		/*PRE*/
+<span class="fc" id="L215">		cmq.setCurrentRoom(room1);</span>
+		/*EXE &amp;&amp; POST*/
+<span class="fc" id="L217">		assertEquals(cmq.processCommand(&quot;l&quot;),&quot;There might be something here...\nYou found some creamy cream!\n&quot;);</span>
+<span class="fc" id="L218">		Mockito.verify(player,times(1)).addItem(Item.CREAM);</span>
+<span class="fc" id="L219">}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;n&quot;).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(room4) has been called.
+	 * Execution steps: Call cmq.processCommand(&quot;n&quot;).
+	 *                  Call cmq.getCurrentRoom().
+	 * Postconditions: Return value of cmq.processCommand(&quot;n&quot;) is &quot;&quot;.
+	 *                 Return value of cmq.getCurrentRoom() is room5.
+	 */
+	@Test
+	public void testProcessCommandN() 
+	{
+		/*PRE*/
+<span class="fc" id="L234">		cmq.setCurrentRoom(room4);</span>
+		/*EXE &amp;&amp; POST*/
+<span class="fc" id="L236">		assertEquals(cmq.processCommand(&quot;n&quot;),&quot;&quot;);</span>
+<span class="fc" id="L237">		assertEquals(cmq.getCurrentRoom(),room5);</span>
+<span class="fc" id="L238">	}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;s&quot;).
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(room1) has been called.
+	 * Execution steps: Call cmq.processCommand(&quot;s&quot;).
+	 *                  Call cmq.getCurrentRoom().
+	 * Postconditions: Return value of cmq.processCommand(&quot;s&quot;) is &quot;A door in that direction does not exist.\n&quot;.
+	 *                 Return value of cmq.getCurrentRoom() is room1.
+	 */
+	@Test
+	public void testProcessCommandS() 
+	{
+		/*PRE*/
+<span class="fc" id="L253">		cmq.setCurrentRoom(room1);</span>
+		/*EXE &amp;&amp; POST*/
+<span class="fc" id="L255">		assertEquals(cmq.processCommand(&quot;s&quot;),&quot;A door in that direction does not exist.\n&quot;);</span>
+<span class="fc" id="L256">		assertEquals(cmq.getCurrentRoom(),room1);</span>
+<span class="fc" id="L257">	}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;D&quot;).
+	 * Preconditions: Player has no items.
+	 * Execution steps: Call cmq.processCommand(&quot;D&quot;).
+	 *                  Call cmq.isGameOver().
+	 * Postconditions: Return value of cmq.processCommand(&quot;D&quot;) is &quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n&quot;.
+	 *                 Return value of cmq.isGameOver() is true.
+	 */
+	@Test
+	public void testProcessCommandDLose() 
+	{
+		/*EXE &amp;&amp; POST*/
+<span class="fc" id="L271">		assertEquals(cmq.processCommand(&quot;D&quot;),&quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nYou drink the air, as you have no coffee, sugar, or cream.\nThe air is invigorating, but not invigorating enough. You cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L272">		assertTrue(cmq.isGameOver());</span>
+<span class="fc" id="L273">	}</span>
+	
+	/**
+	 * Test case for String processCommand(&quot;D&quot;).
+	 * Preconditions: Player has all 3 items (coffee, cream, sugar).
+	 * Execution steps: Call cmq.processCommand(&quot;D&quot;).
+	 *                  Call cmq.isGameOver().
+	 * Postconditions: Return value of cmq.processCommand(&quot;D&quot;) is &quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\nYou win!\n&quot;.
+	 *                 Return value of cmq.isGameOver() is true.
+	 */
+	@Test
+	public void testProcessCommandDWin() 
+	{
+		/*PRE:: give player all items*/ 
+<span class="fc" id="L287">		when(player.checkSugar()).thenReturn(true);</span>
+<span class="fc" id="L288">		when(player.checkCoffee()).thenReturn(true);</span>
+<span class="fc" id="L289">		when(player.checkCream()).thenReturn(true);</span>
+<span class="fc" id="L290">		when(player.getInventoryString()).thenReturn(&quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n&quot;);</span>
+		/*EXE &amp;&amp; POST*/ 
+<span class="fc" id="L292">		assertEquals(cmq.processCommand(&quot;D&quot;),&quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the beverage and are ready to study!\nYou win!\n&quot;);</span>
+<span class="fc" id="L293">		assertTrue(cmq.isGameOver());</span>
+<span class="fc" id="L294">	}</span>
+
+	/**
+	 * Test case for being in northmost room and attempting to go north 
+	 * Preconditions: call cmq.setCurrentRoom(room6)
+	 * Execution steps: Call cmq.processCommand(&quot;n&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;n&quot;) is &quot;A door in that direction doesn't exist.\n&quot;
+	 */
+	@Test 
+	public void testNorthMostBoundary()
+	{
+<span class="fc" id="L305">		cmq.setCurrentRoom(room6);</span>
+<span class="fc" id="L306">		assertEquals(cmq.processCommand(&quot;n&quot;),&quot;A door in that direction does not exist.\n&quot;);</span>
+<span class="fc" id="L307">	}</span>
+	/**
+	 * Test case for being in room 2 and going south to room 1 
+	 * Preconditions: call cmq.setCurrentRoom(room2)
+	 * Execution steps: Call cmq.processCommand(&quot;s&quot;)
+	 * 					Call cmq.getCurrentRoom()
+	 * Postconditions: Return value of cmq.getcurrentRoom() is room1
+	 */
+	@Test 
+	public void testGoSouthRoom2()
+	{
+<span class="fc" id="L318">		cmq.setCurrentRoom(room2);</span>
+<span class="fc" id="L319">		cmq.processCommand(&quot;s&quot;);</span>
+<span class="fc" id="L320">		assertEquals(cmq.getCurrentRoom(),room1);</span>
+
+<span class="fc" id="L322">	}</span>
+	/**
+	 * Test case for attempting to add a room north with all null values 
+	 * Preconditions: rooms 1-6 have been added 
+	 * Execution steps: Call cmq.addroomAtNorth(null,null,null)
+
+	 * Postconditions: Return value of cmq.addroomAtNorth(null,null,null) is false
+	 */
+	@Test 
+	public void testaddRoomAtNorthInvalidInput()
+	{
+<span class="fc" id="L333">		assertFalse(cmq.addRoomAtNorth(null,null,null));</span>
+<span class="fc" id="L334">	}</span>
+	/**
+	 * Test case for attempting to set current room to a room that DNE 
+	 * Preconditions: rooms 1-6 have been added, create mock room and assign to myRoom 
+	 * Execution steps: Call cmq.setCurrentRoom(myRoom)
+	 * Postconditions: Return value of cmq.setCurrent(myRoom) is false
+	 */
+	@Test 
+	public void testSetCurrDNE()
+	{
+		//mock room 
+<span class="fc" id="L345">		Room myRoom = Mockito.mock(Room.class);</span>
+<span class="fc" id="L346">		assertFalse(cmq.setCurrentRoom(myRoom));</span>
+<span class="fc" id="L347">	}</span>
+	/**
+	 * Test case for searching room 2 for an item and there being nothing 
+	 * Preconditions: rooms 1-6 have been added, room2 has no items, call cmq.setCurrentRoom(room2)
+	 * Execution steps: Call cmq.processCommand(&quot;l&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;l&quot;) is &quot;You don't see anything out of the ordinary.\n&quot;
+	 */
+	@Test 
+	public void testSearchRoom2Empty()
+	{
+<span class="fc" id="L357">		cmq.setCurrentRoom(room2);</span>
+<span class="fc" id="L358">		assertEquals(cmq.processCommand(&quot;l&quot;),&quot;You don't see anything out of the ordinary.\n&quot;);</span>
+<span class="fc" id="L359">	}</span>
+	/**
+	 * Test case for invalid input in room1
+	 * Preconditions: room1 ~ room6 have been added to cmq.
+	 *                cmq.setCurrentRoom(room1) has been called.
+	 * Execution steps: Call cmq.processCommand(&quot;ASDF&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;l&quot;) is &quot;What?&quot;
+	 */
+	@Test 
+	public void testInvalidInputRoom1()
+	{
+<span class="fc" id="L370">		cmq.setCurrentRoom(room1);</span>
+<span class="fc" id="L371">		assertEquals(cmq.processCommand(&quot;ASDF&quot;),&quot;What?&quot;);</span>
+<span class="fc" id="L372">	}</span>
+	/**
+	 * Test case drink only sugar 
+	 * Preconditions: player has sugar 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkSugar()
+	{
+		//give player sugar 
+<span class="fc" id="L383">		when(player.checkSugar()).thenReturn(true);</span>
+<span class="fc" id="L384">		when(player.getInventoryString()).thenReturn(&quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n&quot;);</span>
+<span class="fc" id="L385">		 assertEquals(cmq.processCommand(&quot;d&quot;),&quot;YOU HAVE NO COFFEE!\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nYou eat the sugar, but without caffeine, you cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L386">	}</span>
+	/**
+	 * Test case drink cream and sugar 
+	 * Preconditions: player has sugar and cream 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkSugarAndCream()
+	{
+		//give player sugar 
+<span class="fc" id="L397">		when(player.checkSugar()).thenReturn(true);</span>
+		//give player cream
+<span class="fc" id="L399">		when(player.checkCream()).thenReturn(true);</span>
+<span class="fc" id="L400">		when(player.getInventoryString()).thenReturn(&quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYou have some tasty sugar.\n&quot;);</span>
+<span class="fc" id="L401">		 assertEquals(cmq.processCommand(&quot;d&quot;),&quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYou have some tasty sugar.\n\nYou drink the sweetened cream, but without caffeine you cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L402">	}</span>
+	/**
+	 * Test case drink coffee and sugar 
+	 * Preconditions: player has sugar and coffee 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkSugarAndCoffee()
+	{
+		//give player sugar 
+<span class="fc" id="L413">		when(player.checkSugar()).thenReturn(true);</span>
+		//give player coffee
+<span class="fc" id="L415">		when(player.checkCoffee()).thenReturn(true);</span>
+<span class="fc" id="L416">		when(player.getInventoryString()).thenReturn(&quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n&quot;);</span>
+<span class="fc" id="L417">		 assertEquals(cmq.processCommand(&quot;d&quot;),&quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYou have some tasty sugar.\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L418">	}</span>
+	/**
+	 * Test case drink only coffee
+	 * Preconditions: player has coffee 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkCoffee()
+	{
+		
+		//give player coffee
+<span class="fc" id="L430">		when(player.checkCoffee()).thenReturn(true);</span>
+<span class="fc" id="L431">		when(player.getInventoryString()).thenReturn(&quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n&quot;);</span>
+<span class="fc" id="L432">		 assertEquals(cmq.processCommand(&quot;d&quot;),&quot;You have a cup of delicious coffee.\nYOU HAVE NO CREAM!\nYOU HAVE NO SUGAR!\n\nWithout cream, you get an ulcer and cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L433">	}</span>
+	/**
+	 * Test case drink  coffee and cream 
+	 * Preconditions: player has coffee 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkCoffeeAndCream()
+	{
+		
+		//give player coffee
+<span class="fc" id="L445">		when(player.checkCoffee()).thenReturn(true);</span>
+		//give player cream
+<span class="fc" id="L447">		when(player.checkCream()).thenReturn(true);</span>
+<span class="fc" id="L448">		when(player.getInventoryString()).thenReturn(&quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n&quot;);</span>
+<span class="fc" id="L449">		assertEquals(cmq.processCommand(&quot;d&quot;),&quot;You have a cup of delicious coffee.\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nWithout sugar, the coffee is too bitter. You cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L450">	}</span>
+		/**
+	 * Test case drink  only cream 
+	 * Preconditions: player has cream 
+	 * Execution steps: Call cmq.processCommand(&quot;d&quot;)
+	 * Postconditions: Return value of cmq.processCommand(&quot;d&quot;) is &quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n&quot;
+	 */
+	@Test 
+	public void testDrinkCream()
+	{
+		//give player cream
+<span class="fc" id="L461">		when(player.checkCream()).thenReturn(true);</span>
+<span class="fc" id="L462">		when(player.getInventoryString()).thenReturn(&quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n&quot;);</span>
+<span class="fc" id="L463">		assertEquals(cmq.processCommand(&quot;d&quot;),&quot;YOU HAVE NO COFFEE!\nYou have some fresh cream.\nYOU HAVE NO SUGAR!\n\nYou drink the cream, but without caffeine, you cannot study.\nYou lose!\n&quot;);</span>
+<span class="fc" id="L464">	}</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202101150304</span></div></body></html>
